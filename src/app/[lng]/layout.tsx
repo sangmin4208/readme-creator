@@ -1,4 +1,3 @@
-import { dir } from "i18next";
 import type { Metadata } from "next";
 
 import "../globals.css";
@@ -17,9 +16,14 @@ export default function RootLayout({
   };
 }) {
   return (
-    <html lang={lng} dir={dir(lng)}>
-      <head />
-      <body>{children}</body>
+    <html>
+      <body
+        style={{
+          fontFamily: "Inter, sans-serif",
+        }}
+      >
+        {children}
+      </body>
     </html>
   );
 }

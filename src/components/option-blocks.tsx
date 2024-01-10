@@ -8,8 +8,8 @@ interface OptionBlocks extends HTMLAttributes<HTMLDivElement> {}
 export const OptionBlocks = ({ className, ...props }: OptionBlocks) => {
   const { optionBlocks } = useBlocks();
   return (
-    <div className={cn(className)} {...props}>
-      <div className="flex flex-col gap-2">
+    <div className={cn("overflow-scroll", className)} {...props}>
+      <div className="flex flex-col gap-2 mb-10">
         {optionBlocks.map((block) => (
           <OptionBlockItem key={block.slug} block={block} />
         ))}

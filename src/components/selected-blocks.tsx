@@ -1,6 +1,6 @@
 "use client";
 
-import { useBlocks } from "@/hooks/use-blocks";
+import { Block, useBlocks } from "@/hooks/use-blocks";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, Reorder, useDragControls } from "framer-motion";
 import { GripVertical, RefreshCcw, Trash } from "lucide-react";
@@ -12,8 +12,8 @@ export const SelectedBlocks = ({
   className,
   ...props
 }: UserSelectedListProps) => {
-  const { currentBlocks, setCurrentBlocks } = useBlocks();
-  const [currentActive, setCurrentActive] = useState<string>("");
+  const { currentBlocks, setCurrentBlocks, currentActive, onClickSelectBlock } =
+    useBlocks();
   return (
     <div className={cn(className, "overflow-scroll")} {...props}>
       <AnimatePresence>
@@ -21,8 +21,8 @@ export const SelectedBlocks = ({
           <div className="flex flex-col gap-1">
             {currentBlocks.map((block) => (
               <Item
-                isActive={currentActive === block.slug}
-                onClick={() => setCurrentActive(block.slug)}
+                isActive={currentActive?.slug === block.slug}
+                onClick={() => onClickSelectBlock(block.slug)}
                 key={block.slug}
                 block={block}
               />
@@ -39,7 +39,7 @@ function Item({
   isActive,
   onClick,
 }: {
-  block: { slug: string; title: string };
+  block: Block;
   isActive?: boolean;
   onClick?: () => void;
 }) {
@@ -79,7 +79,7 @@ function Item({
             <GripVertical />
           </div>
           <div className="text-sm line-clamp-1 basis-full select-none">
-            {block.title}
+            {block.name}
           </div>
         </div>
         <div

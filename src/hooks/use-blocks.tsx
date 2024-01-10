@@ -2,38 +2,26 @@
 
 import { createContext, useContext, useState } from "react";
 
-type Block = {
+import data from "@/data/index";
+
+export type Block = {
   slug: string;
-  title: string;
+  name: string;
+  markdown: string;
 };
 
-const initialBlock: Block[] = [
-  {
-    slug: "title-and-description",
-    title: "Title and Description",
-  },
-
-  {
-    slug: "author",
-    title: "Author",
-  },
-  {
-    slug: "badges",
-    title: "Badges",
-  },
-  {
-    slug: "contributing",
-    title: "Contributing",
-  },
-  {
-    slug: "delployment",
-    title: "Deployment",
-  },
-];
-
 const _useBlocks = () => {
+  const initialBlock = data["en"];
   const [currentBlocks, setCurrentBlocks] = useState<Block[]>([]);
   const [optionBlocks, setOptionBlocks] = useState<Block[]>(initialBlock);
+
+  const [currentActive, setCurrentActive] = useState<Block>();
+
+  const onClickSelectBlock = (slug: string) => {
+    const block = currentBlocks.find((block) => block.slug === slug);
+    if (!block) return;
+    setCurrentActive(block);
+  };
 
   const onClickOptionBlock = (slug: string) => {
     const block = optionBlocks.find((block) => block.slug === slug);
@@ -49,6 +37,16 @@ const _useBlocks = () => {
     setCurrentBlocks(currentBlocks.filter((block) => block.slug !== slug));
   };
 
+  const onActiveBlockChange = (markdown: string) => {
+    if (!currentActive) return;
+    const newBlock = { ...currentActive, markdown };
+    setCurrentBlocks(
+      currentBlocks.map((block) =>
+        block.slug === newBlock.slug ? newBlock : block
+      )
+    );
+  };
+
   return {
     currentBlocks,
     setCurrentBlocks,
@@ -56,6 +54,9 @@ const _useBlocks = () => {
     setOptionBlocks,
     onClickOptionBlock,
     onClickCurrentDelete,
+    onClickSelectBlock,
+    currentActive,
+    onActiveBlockChange,
   };
 };
 
