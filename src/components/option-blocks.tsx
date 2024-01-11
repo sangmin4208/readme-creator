@@ -1,5 +1,5 @@
 "use client";
-import { useBlocks } from "@/hooks/use-blocks";
+import { Block, useBlocks } from "@/hooks/use-blocks";
 import { cn } from "@/lib/utils";
 import { HTMLAttributes, useEffect, useState } from "react";
 import { AddCustomBlock } from "./add-custom-block";
@@ -8,13 +8,21 @@ import { Input } from "./ui/input";
 interface OptionBlocks extends HTMLAttributes<HTMLDivElement> {}
 
 export const OptionBlocks = ({ className, ...props }: OptionBlocks) => {
-  const { optionBlocks } = useBlocks();
+  const { currentBlocks, initialBlocks } = useBlocks();
   const [value, setValue] = useState("");
+  const [optionBlocks, setOptionBlocks] = useState<Block[]>(initialBlocks);
   const [filteredOptionBlocks, setFilteredOptionBlocks] =
-    useState(optionBlocks);
+    useState<Block[]>(optionBlocks);
+
+  console.log(optionBlocks.length);
+  useEffect(() => {
+    setOptionBlocks(
+      initialBlocks.filter((block) => !currentBlocks.includes(block))
+    );
+  }, [currentBlocks, initialBlocks]);
 
   useEffect(() => {
-    if (value === "") setFilteredOptionBlocks(optionBlocks);
+    if (value === "") return setFilteredOptionBlocks(optionBlocks);
     setFilteredOptionBlocks(
       optionBlocks.filter((block) =>
         block.name.toLowerCase().includes(value.toLowerCase())
@@ -31,7 +39,7 @@ export const OptionBlocks = ({ className, ...props }: OptionBlocks) => {
         placeholder="Search blocks..."
         className="w-full my-2"
       />
-      <div className="mt-2 flex flex-col pb-[200px] gap-2 h-full overflow-scroll scrollbar-hide">
+      <div className="mt-2 flex flex-col pb-[20] gap-2 h-full overflow-scroll scrollbar-hide">
         {filteredOptionBlocks.map((block) => (
           <OptionBlockItem key={block.slug} block={block} />
         ))}

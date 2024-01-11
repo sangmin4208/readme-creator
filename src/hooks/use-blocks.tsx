@@ -10,9 +10,8 @@ export type Block = {
 };
 
 const _useBlocks = () => {
-  const initialBlock = data["en"];
+  const initialBlocks = data["en"];
   const [currentBlocks, setCurrentBlocks] = useState<Block[]>([]);
-  const [optionBlocks, setOptionBlocks] = useState<Block[]>(initialBlock);
 
   const [currentActive, setCurrentActive] = useState<Block | undefined>(
     undefined
@@ -33,22 +32,19 @@ const _useBlocks = () => {
   };
 
   const handleAddBlock = (slug: string) => {
-    const block = optionBlocks.find((block) => block.slug === slug);
+    const block = initialBlocks.find((block) => block.slug === slug);
     if (!block) return;
     setCurrentBlocks([...currentBlocks, block]);
     setCurrentActive(block);
-    setOptionBlocks((prev) => prev.filter((block) => block.slug !== slug));
   };
 
   const handleBlockDelete = (slug: string) => {
     const blockIdx = currentBlocks.findIndex((block) => block.slug === slug);
     if (blockIdx === -1) return;
     const block = currentBlocks[blockIdx];
-    if (initialBlock.some((block) => block.slug === slug)) {
-      setOptionBlocks([...optionBlocks, block]);
-    }
+
     setCurrentActive(blockIdx === 0 ? undefined : currentBlocks[blockIdx - 1]);
-    const newBlocks = [...currentBlocks.filter((block) => block.slug !== slug)];
+    const newBlocks = currentBlocks.filter((block) => block.slug !== slug);
     setCurrentBlocks(newBlocks);
   };
 
@@ -74,7 +70,7 @@ const _useBlocks = () => {
   };
   const handleResetBlock = (slug: string) => {
     const block = currentBlocks.find((block) => block.slug === slug);
-    const orignalnamMarkdown = initialBlock.find(
+    const orignalnamMarkdown = initialBlocks.find(
       (block) => block.slug === slug
     );
     if (!block || !orignalnamMarkdown) return;
@@ -88,14 +84,12 @@ const _useBlocks = () => {
   const handleResetSelectedBlocks = () => {
     setCurrentBlocks([]);
     setCurrentActive(undefined);
-    setOptionBlocks(initialBlock);
   };
 
   return {
+    initialBlocks,
     currentBlocks,
     setCurrentBlocks,
-    optionBlocks,
-    setOptionBlocks,
     handleAddBlock,
     handleBlockDelete,
     handleSeleteBlock,
@@ -130,7 +124,6 @@ export const BlocksProvider = ({ children }: { children: JSX.Element }) => {
 export const _useBlocksLocalStorageSync = ({
   currentBlocks,
   setCurrentBlocks,
-  setOptionBlocks,
   currentActive,
   handleSeleteBlock,
 }: ReturnType<typeof _useBlocks>) => {
@@ -146,11 +139,6 @@ export const _useBlocksLocalStorageSync = ({
     if (blocksInit) return;
     if (localBlocks) {
       setCurrentBlocks(localBlocks);
-      setOptionBlocks((prev) => {
-        return prev.filter(
-          (block) => !localBlocks.some((b) => b.slug === block.slug)
-        );
-      });
     }
 
     setBlocksInit(true);
