@@ -53,6 +53,7 @@ export const AddCustomBlock = ({
   const handleSubmit = (data: z.infer<typeof formSchema>) => {
     handleAddCustomBlock(data.name);
     ref.current?.click();
+    form.reset();
   };
 
   return (
@@ -79,13 +80,17 @@ export const AddCustomBlock = ({
                   <FormItem>
                     <FormLabel>Block Name</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter custom block name" {...field} />
+                      <Input
+                        autoComplete="off"
+                        placeholder="Enter custom block name"
+                        {...field}
+                      />
                     </FormControl>
                     <FormDescription />
                     <FormMessage />
                   </FormItem>
                 )}
-              />{" "}
+              />
               <DialogFooter>
                 <DialogClose asChild>
                   <Button ref={ref} type="button" variant="secondary">
