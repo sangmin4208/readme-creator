@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { BlocksProvider } from "@/hooks/use-blocks";
 import "../globals.css";
 
 export const metadata: Metadata = {
@@ -22,7 +23,7 @@ export default function RootLayout({
           fontFamily: "Inter, sans-serif",
         }}
       >
-        {children}
+        <BlocksProvider>{children}</BlocksProvider>
       </body>
     </html>
   );

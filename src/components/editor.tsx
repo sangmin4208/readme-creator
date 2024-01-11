@@ -12,25 +12,32 @@ export const Editor = ({ className, ...props }: EditorProps) => {
 
   return (
     <div className={cn("h-full", className)} {...props}>
-      <MonacoEditor
-        className="scrollbar-hide"
-        options={{
-          scrollbar: {
-            horizontal: "hidden",
-            vertical: "hidden",
-          },
-          wrappingIndent: "indent",
-          wordWrap: "on",
-          minimap: {
-            enabled: false,
-          },
-        }}
-        defaultLanguage="markdown"
-        value={currentActive?.markdown}
-        onChange={(value) => {
-          if (value) onActiveBlockChange(value);
-        }}
-      />
+      {currentActive && (
+        <MonacoEditor
+          className="scrollbar-hide"
+          options={{
+            scrollbar: {
+              horizontal: "hidden",
+              vertical: "hidden",
+            },
+            wrappingIndent: "indent",
+            wordWrap: "on",
+            minimap: {
+              enabled: false,
+            },
+          }}
+          defaultLanguage="markdown"
+          value={currentActive?.markdown}
+          onChange={(value) => {
+            if (value) onActiveBlockChange(value);
+          }}
+        />
+      )}
+      {!currentActive && (
+        <div className="flex justify-center items-center h-full">
+          <div className="text-gray-400 text-2xl">No Block Selected</div>
+        </div>
+      )}
     </div>
   );
 };
