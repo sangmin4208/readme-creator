@@ -63,7 +63,10 @@ export default function Home({
         </div>
         <div className="flex justify-center mt-12">
           <Button size={"lg"} asChild>
-            <Link href="/editor" className="text-xl font-bold capitalize">
+            <Link
+              href={`/${lng}/editor`}
+              className="text-xl font-bold capitalize"
+            >
               get started
             </Link>
           </Button>
