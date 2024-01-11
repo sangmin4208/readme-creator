@@ -1,4 +1,5 @@
 import { useTranslation } from "@/app/i18n";
+import { CopyBlocksButton } from "@/components/copy-blocks-button";
 import { Editor } from "@/components/editor";
 import { OptionBlocks } from "@/components/option-blocks";
 import { SelectedBlocks } from "@/components/selected-blocks";
@@ -54,10 +55,14 @@ const Page = async ({
           <ResizableHandle withHandle />
           <ResizablePanel className="grow p-2 h-full">
             <Tabs defaultValue="preview" className="h-full">
-              <TabsList>
-                <TabsTrigger value="preview">{t("preview")}</TabsTrigger>
-                <TabsTrigger value="raw">{t("raw")}</TabsTrigger>
-              </TabsList>
+              <div className="flex justify-between items-center">
+                <TabsList>
+                  <TabsTrigger value="preview">{t("preview")}</TabsTrigger>
+                  <TabsTrigger value="raw">{t("raw")}</TabsTrigger>
+                </TabsList>
+                <CopyBlocksButton />
+              </div>
+
               <TabsContent className="h-full pb-10" value="preview">
                 <Viewer />
               </TabsContent>

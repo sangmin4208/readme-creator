@@ -1,3 +1,4 @@
+import { Toaster } from "@/components/ui/sonner";
 import type { Metadata } from "next";
 
 import { BlocksProvider } from "@/hooks/use-blocks";
@@ -23,6 +24,7 @@ export default function RootLayout({
           fontFamily: "Inter, sans-serif",
         }}
       >
+        <Toaster />
         <BlocksProvider>{children}</BlocksProvider>
       </body>
     </html>
