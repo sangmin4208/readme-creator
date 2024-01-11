@@ -10,7 +10,7 @@ export type Block = {
 };
 
 const _useBlocks = () => {
-  const initialBlocks = data["en"];
+  const initialBlocks = data["en"] as Block[];
   const [currentBlocks, setCurrentBlocks] = useState<Block[]>([]);
 
   const [currentActive, setCurrentActive] = useState<Block | undefined>(
@@ -32,16 +32,16 @@ const _useBlocks = () => {
   };
 
   const handleAddBlock = (slug: string) => {
-    const block = initialBlocks.find((block) => block.slug === slug);
-    if (!block) return;
-    setCurrentBlocks([...currentBlocks, block]);
-    setCurrentActive(block);
+    const block = currentBlocks.find((block) => block.slug === slug);
+    const newBlock = initialBlocks.find((block) => block.slug === slug);
+    if (block || !newBlock) return;
+    setCurrentBlocks([...currentBlocks, newBlock]);
+    setCurrentActive(newBlock);
   };
 
   const handleBlockDelete = (slug: string) => {
     const blockIdx = currentBlocks.findIndex((block) => block.slug === slug);
     if (blockIdx === -1) return;
-    const block = currentBlocks[blockIdx];
 
     setCurrentActive(blockIdx === 0 ? undefined : currentBlocks[blockIdx - 1]);
     const newBlocks = currentBlocks.filter((block) => block.slug !== slug);
@@ -70,11 +70,9 @@ const _useBlocks = () => {
   };
   const handleResetBlock = (slug: string) => {
     const block = currentBlocks.find((block) => block.slug === slug);
-    const orignalnamMarkdown = initialBlocks.find(
-      (block) => block.slug === slug
-    );
-    if (!block || !orignalnamMarkdown) return;
-    const newBlock = { ...orignalnamMarkdown };
+    const originBlock = initialBlocks.find((block) => block.slug === slug);
+    if (!block || !originBlock) return;
+    const newBlock = { ...originBlock };
     setCurrentBlocks((prev) =>
       prev.map((block) => (block.slug === newBlock.slug ? newBlock : block))
     );
