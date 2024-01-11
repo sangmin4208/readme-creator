@@ -24,26 +24,30 @@ export default function Home({
   const { t } = useTranslation(lng, defaultNS);
   const title = t("title");
   return (
-    <div className="bg-gray-50 h-full">
+    <div className="bg-gray-50 h-full flex items-center justify-center">
       <div className="relative overflow-hidden">
         <div
-          className={cn("flex flex-col items-center gap-4 mt-4", {
+          className={cn("flex flex-col items-center gap-4 mt-4 font-bold", {
             "flex-col-reverse": lng === "ko",
           })}
         >
-          <h2 className="text-5xl text-center">{title}</h2>
-          <h2 className="text-5xl text-center text-green-500">README</h2>
+          <h2 className="text-7xl text-center">{title}</h2>
+          <h2 className="text-7xl text-center text-green-500 font-mono ">
+            README
+          </h2>
         </div>
         <div className="flex gap-2 mt-8 justify-center items-center">
-          <Trans i18nKey="languageSwitcher" t={t}>
-            {{ lng }}
-          </Trans>
           <div className="flex space-x-2">
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant={"ghost"}>
+              <DropdownMenuTrigger className="cursor-pointer">
+                <div className="p-2 flex gap-4 items-center">
+                  <p className="text-2xl font-semibold">
+                    <Trans i18nKey="languageSwitcher" t={t}>
+                      {{ lng }}
+                    </Trans>
+                  </p>
                   <Globe />
-                </Button>
+                </div>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 {languages.map((lng) => (
@@ -58,8 +62,10 @@ export default function Home({
           </div>
         </div>
         <div className="flex justify-center mt-12">
-          <Button>
-            <Link href="/editor">Get Started</Link>
+          <Button size={"lg"} asChild>
+            <Link href="/editor" className="text-xl font-bold capitalize">
+              get started
+            </Link>
           </Button>
         </div>
       </div>

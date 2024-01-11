@@ -14,29 +14,45 @@ const _useBlocks = () => {
   const [currentBlocks, setCurrentBlocks] = useState<Block[]>([]);
   const [optionBlocks, setOptionBlocks] = useState<Block[]>(initialBlock);
 
-  const [currentActive, setCurrentActive] = useState<Block>();
+  const [currentActive, setCurrentActive] = useState<Block | undefined>(
+    undefined
+  );
 
-  const onClickSelectBlock = (slug: string) => {
+  useEffect(() => {
+    if (!currentBlocks) return setCurrentActive(undefined);
+    if (!currentActive) return;
+    if (!currentBlocks.some((block) => block.slug === currentActive.slug)) {
+      setCurrentActive(undefined);
+    }
+  }, [currentBlocks, currentActive]);
+
+  const handleSeleteBlock = (slug: string) => {
     const block = currentBlocks.find((block) => block.slug === slug);
-    if (!block) return;
+    if (!block) return setCurrentActive(undefined);
     setCurrentActive(block);
   };
 
-  const onClickOptionBlock = (slug: string) => {
+  const handleAddBlock = (slug: string) => {
     const block = optionBlocks.find((block) => block.slug === slug);
     if (!block) return;
     setCurrentBlocks([...currentBlocks, block]);
+    setCurrentActive(block);
     setOptionBlocks(optionBlocks.filter((block) => block.slug !== slug));
   };
 
-  const onClickCurrentDelete = (slug: string) => {
-    const block = currentBlocks.find((block) => block.slug === slug);
-    if (!block) return;
+  const handleBlockDelete = (slug: string) => {
+    const blockIdx = currentBlocks.findIndex((block) => block.slug === slug);
+    if (blockIdx === -1) return;
+    const block = currentBlocks[blockIdx];
+    console.log(block);
     setOptionBlocks([...optionBlocks, block]);
-    setCurrentBlocks(currentBlocks.filter((block) => block.slug !== slug));
+    setCurrentActive(blockIdx === 0 ? undefined : currentBlocks[blockIdx - 1]);
+    const newBlocks = [...currentBlocks.filter((block) => block.slug !== slug)];
+    console.log(newBlocks);
+    setCurrentBlocks(newBlocks);
   };
 
-  const onActiveBlockChange = (markdown: string) => {
+  const handleBlockChange = (markdown: string) => {
     if (!currentActive) return;
     const newBlock = { ...currentActive, markdown };
     setCurrentBlocks(
@@ -44,6 +60,26 @@ const _useBlocks = () => {
         block.slug === newBlock.slug ? newBlock : block
       )
     );
+    setCurrentActive(newBlock);
+  };
+
+  const handleResetBlock = (slug: string) => {
+    const block = currentBlocks.find((block) => block.slug === slug);
+    const orignalnamMarkdown = initialBlock.find(
+      (block) => block.slug === slug
+    );
+    if (!block || !orignalnamMarkdown) return;
+    const newBlock = { ...orignalnamMarkdown };
+    setCurrentBlocks((prev) =>
+      prev.map((block) => (block.slug === newBlock.slug ? newBlock : block))
+    );
+    setCurrentActive(newBlock);
+  };
+
+  const handleResetSelectedBlocks = () => {
+    setCurrentBlocks([]);
+    setCurrentActive(undefined);
+    setOptionBlocks(initialBlock);
   };
 
   return {
@@ -51,11 +87,13 @@ const _useBlocks = () => {
     setCurrentBlocks,
     optionBlocks,
     setOptionBlocks,
-    onClickOptionBlock,
-    onClickCurrentDelete,
-    onClickSelectBlock,
+    handleAddBlock,
+    handleBlockDelete,
+    handleSeleteBlock,
     currentActive,
-    onActiveBlockChange,
+    handleBlockChange,
+    handleResetBlock,
+    handleResetSelectedBlocks,
   };
 };
 
@@ -84,8 +122,9 @@ export const _useBlocksLocalStorageSync = ({
   setCurrentBlocks,
   setOptionBlocks,
   currentActive,
-  onClickSelectBlock,
+  handleSeleteBlock,
 }: ReturnType<typeof _useBlocks>) => {
+  const [initial, setInitial] = useState(true);
   const [localBlocks, setLocalBlocks] = useLocalStorage<Block[]>("blocks", []);
   const [localActive, setLocalActive] = useLocalStorage<Block | undefined>(
     "active_block",
@@ -93,8 +132,8 @@ export const _useBlocksLocalStorageSync = ({
   );
 
   useEffect(() => {
-    if (localBlocks.length === 0) return;
-    if (currentBlocks.length === 0) {
+    if (!initial) return;
+    if (localBlocks) {
       setCurrentBlocks(localBlocks);
       setOptionBlocks((prev) => {
         return prev.filter(
@@ -102,18 +141,16 @@ export const _useBlocksLocalStorageSync = ({
         );
       });
     }
-  }, [localBlocks, currentBlocks]); // eslint-disable-line react-hooks/exhaustive-deps
+    if (localActive) {
+      handleSeleteBlock(localActive.slug);
+    }
+    setInitial(false);
+  }, [localBlocks, localActive, initial]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (currentBlocks.length === 0) return;
     setLocalBlocks(currentBlocks);
   }, [currentBlocks, setLocalBlocks]);
-
-  useEffect(() => {
-    if (!currentBlocks) return;
-    if (!localActive) return;
-    if (!currentActive) onClickSelectBlock(localActive.slug);
-  }, [localActive, currentActive, currentBlocks]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (!currentActive) return;

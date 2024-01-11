@@ -3,5 +3,9 @@
     "selectDestination":"Readme에 추기하고 싶은 블록을 클릭해주세요.",
     "editor": "편집",
     "preview": "미리보기",
-    "raw": "원본"
+    "raw": "원본",
+    "copy": "복사",
+    "copySuccess": "클립보드에 복사되었습니다.",
+    "resetSelectedBlocksTitle": "목록 삭제",
+    "resetSelectedBlocksDescription": "이 작업은 되돌릴 수 없습니다. 목록에 추가한 모든 블록이 삭제됩니다."
 }

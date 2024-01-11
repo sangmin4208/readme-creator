@@ -12,7 +12,7 @@ export const SelectedBlocks = ({
   className,
   ...props
 }: UserSelectedListProps) => {
-  const { currentBlocks, setCurrentBlocks, currentActive, onClickSelectBlock } =
+  const { currentBlocks, setCurrentBlocks, currentActive, handleSeleteBlock } =
     useBlocks();
   return (
     <div className={cn(className, "overflow-scroll")} {...props}>
@@ -22,7 +22,7 @@ export const SelectedBlocks = ({
             {currentBlocks.map((block) => (
               <Item
                 isActive={currentActive?.slug === block.slug}
-                onClick={() => onClickSelectBlock(block.slug)}
+                onClick={() => handleSeleteBlock(block.slug)}
                 key={block.slug}
                 block={block}
               />
@@ -43,7 +43,7 @@ function Item({
   isActive?: boolean;
   onClick?: () => void;
 }) {
-  const { onClickCurrentDelete } = useBlocks();
+  const { handleBlockDelete, handleResetBlock } = useBlocks();
   const controls = useDragControls();
   const [isDragging, setIsDragging] = useState(false);
 
@@ -91,7 +91,8 @@ function Item({
             variant="ghost"
             className="cursor-pointer w-fit py-2 px-1 h-fit"
             onClick={(e) => {
-              onClickCurrentDelete(block.slug);
+              e.stopPropagation();
+              handleResetBlock(block.slug);
             }}
           >
             <RefreshCcw size={14} />
@@ -100,7 +101,8 @@ function Item({
             variant="ghost"
             className="cursor-pointer w-fit py-2 px-1 h-fit"
             onClick={(e) => {
-              onClickCurrentDelete(block.slug);
+              e.stopPropagation();
+              handleBlockDelete(block.slug);
             }}
           >
             <Trash size={14} />

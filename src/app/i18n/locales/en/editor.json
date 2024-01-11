@@ -3,5 +3,9 @@
     "selectDestination":" Click on a section below to add it to your readme",
     "editor": "Editor",
     "preview": "Preview",
-    "raw": "Raw"
+    "raw": "Raw",
+    "copy": "Copy",
+    "copySuccess": "Copied to clipboard",
+    "resetSelectedBlocksTitle": "Are you sure you want to delete this list?",
+    "resetSelectedBlocksDescription": "This action cannot be undone. This will delete the all blocks you have added to this list."
 }

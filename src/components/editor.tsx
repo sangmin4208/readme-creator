@@ -8,7 +8,7 @@ import { HTMLAttributes } from "react";
 interface EditorProps extends HTMLAttributes<HTMLDivElement> {}
 
 export const Editor = ({ className, ...props }: EditorProps) => {
-  const { currentActive, onActiveBlockChange } = useBlocks();
+  const { currentActive, handleBlockChange } = useBlocks();
 
   return (
     <div className={cn("h-full", className)} {...props}>
@@ -27,9 +27,9 @@ export const Editor = ({ className, ...props }: EditorProps) => {
             },
           }}
           defaultLanguage="markdown"
-          value={currentActive?.markdown}
+          value={currentActive.markdown}
           onChange={(value) => {
-            if (value) onActiveBlockChange(value);
+            if (value) handleBlockChange(value);
           }}
         />
       )}

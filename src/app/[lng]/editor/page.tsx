@@ -3,6 +3,7 @@ import { CopyBlocksButton } from "@/components/copy-blocks-button";
 import { DownloadBlocksButton } from "@/components/download-blocks-button";
 import { Editor } from "@/components/editor";
 import { OptionBlocks } from "@/components/option-blocks";
+import { ResetSelectedBlocksButton } from "@/components/reset-selected-blocks-button";
 import { SelectedBlocks } from "@/components/selected-blocks";
 import {
   ResizableHandle,
@@ -40,7 +41,10 @@ const Page = async ({
         <div className="w-[320px] border border-b-0 border-l h-full ">
           <ResizablePanelGroup className="h-full" direction="vertical">
             <ResizablePanel minSize={10} className="p-2">
-              <h2 className="font-bold">{t("userSelected")}</h2>
+              <div className="flex justify-between">
+                <h2 className="font-bold">{t("userSelected")}</h2>
+                <ResetSelectedBlocksButton />
+              </div>
               <SelectedBlocks className="h-full scrollbar-hide" />
             </ResizablePanel>
             <ResizableHandle withHandle />

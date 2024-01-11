@@ -10,7 +10,7 @@ export const OptionBlockItem = ({
   block: { slug, name },
   ...props
 }: OptionBlockItemProps) => {
-  const { onClickOptionBlock } = useBlocks();
+  const { handleAddBlock: onClickOptionBlock } = useBlocks();
   return (
     <div
       onClick={() => onClickOptionBlock(slug)}
