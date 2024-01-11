@@ -20,14 +20,13 @@ export const Editor = ({ className, ...props }: EditorProps) => {
               horizontal: "hidden",
               vertical: "hidden",
             },
-            wrappingIndent: "indent",
             wordWrap: "on",
             minimap: {
               enabled: false,
             },
           }}
           defaultLanguage="markdown"
-          value={currentActive.markdown}
+          value={currentActive.markdown.trimStart()}
           onChange={(value) => {
             if (value) handleBlockChange(value);
           }}
