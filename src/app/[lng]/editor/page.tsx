@@ -1,5 +1,6 @@
 import { useTranslation } from "@/app/i18n";
 import { CopyBlocksButton } from "@/components/copy-blocks-button";
+import { DownloadBlocksButton } from "@/components/download-blocks-button";
 import { Editor } from "@/components/editor";
 import { OptionBlocks } from "@/components/option-blocks";
 import { SelectedBlocks } from "@/components/selected-blocks";
@@ -10,6 +11,7 @@ import {
 } from "@/components/ui/resizable";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Viewer } from "@/components/viewer";
+import { ShapesIcon } from "lucide-react";
 import Link from "next/link";
 
 const Page = async ({
@@ -25,9 +27,14 @@ const Page = async ({
     <div className="h-full">
       <nav className="flex justify-between items-center px-5 h-[70px] bg-slate-800 text-white text-2xl">
         <div>
-          <Link href="/">logo</Link>
+          <Link className="flex gap-2 items-center hover:opacity-80" href="/">
+            <ShapesIcon size={32} />
+            <h1 className="text-2xl font-bold">README BUILDER</h1>
+          </Link>
         </div>
-        <div>download</div>
+        <div>
+          <DownloadBlocksButton />
+        </div>
       </nav>
       <main className="flex h-[calc(100%-70px)]">
         <div className="w-[320px] border border-b-0 border-l h-full ">
