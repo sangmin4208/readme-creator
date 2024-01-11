@@ -45,7 +45,7 @@ const Page = async ({
                 <h2 className="font-bold">{t("userSelected")}</h2>
                 <ResetSelectedBlocksButton />
               </div>
-              <SelectedBlocks className="h-full scrollbar-hide" />
+              <SelectedBlocks className="h-full scrollbar-hide pb-[40px]" />
             </ResizablePanel>
             <ResizableHandle withHandle />
             <ResizablePanel className="px-2">

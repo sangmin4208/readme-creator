@@ -44,11 +44,11 @@ const _useBlocks = () => {
     const blockIdx = currentBlocks.findIndex((block) => block.slug === slug);
     if (blockIdx === -1) return;
     const block = currentBlocks[blockIdx];
-    console.log(block);
-    setOptionBlocks([...optionBlocks, block]);
+    if (initialBlock.some((block) => block.slug === slug)) {
+      setOptionBlocks([...optionBlocks, block]);
+    }
     setCurrentActive(blockIdx === 0 ? undefined : currentBlocks[blockIdx - 1]);
     const newBlocks = [...currentBlocks.filter((block) => block.slug !== slug)];
-    console.log(newBlocks);
     setCurrentBlocks(newBlocks);
   };
 
@@ -63,6 +63,15 @@ const _useBlocks = () => {
     setCurrentActive(newBlock);
   };
 
+  const handleAddCustomBlock = (name: string) => {
+    const newBlock = {
+      slug: name + new Date().getTime(),
+      name,
+      markdown: `## ${name} \n\n`,
+    };
+    setCurrentBlocks([...currentBlocks, newBlock]);
+    setCurrentActive(newBlock);
+  };
   const handleResetBlock = (slug: string) => {
     const block = currentBlocks.find((block) => block.slug === slug);
     const orignalnamMarkdown = initialBlock.find(
@@ -94,6 +103,7 @@ const _useBlocks = () => {
     handleBlockChange,
     handleResetBlock,
     handleResetSelectedBlocks,
+    handleAddCustomBlock,
   };
 };
 

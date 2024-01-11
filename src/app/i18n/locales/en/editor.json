@@ -6,6 +6,7 @@
     "raw": "Raw",
     "copy": "Copy",
     "copySuccess": "Copied to clipboard",
+    "customBlockModalDescription": "You can add a custom block to your readme by entering the name of block below.",
     "resetSelectedBlocksTitle": "Are you sure you want to delete this list?",
     "resetSelectedBlocksDescription": "This action cannot be undone. This will delete the all blocks you have added to this list."
 }
