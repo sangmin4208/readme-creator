@@ -59,8 +59,8 @@ export const AddCustomBlock = ({
     <div className={cn(className)} {...props}>
       <Dialog>
         <DialogTrigger asChild>
-          <Button variant={"outline"} className="w-full">
-            Custom Block
+          <Button variant={"outline"} className="w-full font-semibold">
+            Add Custom Block
           </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-md">
