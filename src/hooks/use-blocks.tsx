@@ -27,9 +27,7 @@ const _useBlocks = () => {
   }, [currentBlocks, currentActive]);
 
   const handleSeleteBlock = (slug: string) => {
-    console.log(slug);
     const block = currentBlocks.find((block) => block.slug === slug);
-    console.log(block);
     if (!block) return setCurrentActive(undefined);
     setCurrentActive(block);
   };
@@ -39,7 +37,7 @@ const _useBlocks = () => {
     if (!block) return;
     setCurrentBlocks([...currentBlocks, block]);
     setCurrentActive(block);
-    setOptionBlocks(optionBlocks.filter((block) => block.slug !== slug));
+    setOptionBlocks((prev) => prev.filter((block) => block.slug !== slug));
   };
 
   const handleBlockDelete = (slug: string) => {
@@ -156,7 +154,7 @@ export const _useBlocksLocalStorageSync = ({
     }
 
     setBlocksInit(true);
-  }, [localBlocks, localActive, blocksInit]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [localBlocks, blocksInit]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (!blocksInit) return;
@@ -168,12 +166,12 @@ export const _useBlocksLocalStorageSync = ({
   }, [localActive, activeBlockInit, blocksInit]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    if (currentBlocks.length === 0) return;
+    if (!blocksInit) return;
     setLocalBlocks(currentBlocks);
-  }, [currentBlocks, setLocalBlocks]);
+  }, [currentBlocks, setLocalBlocks, blocksInit]);
 
   useEffect(() => {
-    if (!currentActive) return;
+    if (!activeBlockInit) return;
     setLocalActive(currentActive);
-  }, [currentActive, setLocalActive]);
+  }, [currentActive, setLocalActive, activeBlockInit]);
 };

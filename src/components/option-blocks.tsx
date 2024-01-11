@@ -20,7 +20,7 @@ export const OptionBlocks = ({ className, ...props }: OptionBlocks) => {
         block.name.toLowerCase().includes(value.toLowerCase())
       )
     );
-  }, [value]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [value, optionBlocks]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div className={cn("h-full", className)} {...props}>
@@ -31,7 +31,7 @@ export const OptionBlocks = ({ className, ...props }: OptionBlocks) => {
         placeholder="Search blocks..."
         className="w-full my-2"
       />
-      <div className="mt-2 flex flex-col gap-2 mb-10 h-full overflow-scroll scrollbar-hide">
+      <div className="mt-2 flex flex-col pb-[200px] gap-2 h-full overflow-scroll scrollbar-hide">
         {filteredOptionBlocks.map((block) => (
           <OptionBlockItem key={block.slug} block={block} />
         ))}
